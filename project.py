@@ -563,7 +563,7 @@ def showBuildings() -> None:
     hideTactics()
    
     if antTrapInitial == True:
-        antTrap.place(x=0,y=160)
+        antTrap.place(x=10,y=160)
     if woodMillInitial == True:
         woodMill.place(x=110,y=160)
     if smallShackInitial == True:
@@ -595,22 +595,22 @@ def showCitizens() -> None:
     hideUpgrades()
     hideItems()
     hideTactics()
-    unusedLabel.place(x=0,y=140)
+    unusedLabel.place(x=10,y=140)
     assignOne.place(x=140,y=140)
     assignTen.place(x=180,y=140)
     assignHundred.place(x=220,y=140)
-    manageMills.place(x=0,y=180)
-    tendAntTraps.place(x=0,y=210)
-    collectScrap.place(x=0,y=240)
-    harvestMen.place(x=0,y=270)
-    plusOne.place(x=135,y=180)
-    minusOne.place(x=150,y=180)
-    plusTwo.place(x=130,y=210)
-    minusTwo.place(x=145,y=210)
-    plusThree.place(x=140,y=240)
-    minusThree.place(x=155,y=240)
-    plusFour.place(x=140,y=270)
-    minusFour.place(x=155,y=270)
+    manageMills.place(x=10,y=180)
+    tendAntTraps.place(x=10,y=210)
+    collectScrap.place(x=10,y=240)
+    harvestMen.place(x=10,y=270)
+    plusOne.place(x=145,y=180)
+    minusOne.place(x=160,y=180)
+    plusTwo.place(x=140,y=210)
+    minusTwo.place(x=155,y=210)
+    plusThree.place(x=150,y=240)
+    minusThree.place(x=165,y=240)
+    plusFour.place(x=150,y=270)
+    minusFour.place(x=165,y=270)
    
 
 
@@ -651,7 +651,7 @@ def showUpgrades() -> None:
     for x in upgradeList2:
         Upgrades.checkCondition(x)
    
-    Upgrades.upgradeFrame.place(x=0,y=155)
+    Upgrades.upgradeFrame.place(x=10,y=155)
     Upgrades.upgradeFrame2.place(x=225,y=155)
 
 def showTactics() -> None:
@@ -663,11 +663,11 @@ def showTactics() -> None:
     hideUpgrades()
     hideCitizens()
     hideItems()
-    troopsLabel.place(x=0,y=150)
-    stickWielder.place(x=0,y=180)
-    battlesLabel.place(x=0,y=210)
-    forestHill.place(x=0,y=240)
-    battleResults.place(x=0,y=280)
+    troopsLabel.place(x=10,y=150)
+    stickWielder.place(x=10,y=180)
+    battlesLabel.place(x=10,y=210)
+    forestHill.place(x=10,y=240)
+    battleResults.place(x=10,y=280)
    
 def hideTactics() -> None:
     '''
@@ -689,7 +689,7 @@ def showItems() -> None:
     hideCitizens()
     hideUpgrades()
     hideTactics()
-    Items.itemFrame.place(x=0,y=155)
+    Items.itemFrame.place(x=10,y=155)
    
 def hideItems() -> None:
     '''
@@ -757,7 +757,7 @@ def checking() -> None:
     global boon, unusedCitizens, onMilitary, totalCitizensBonus, scrapMultiplier, millTendingBoost, antTendingBoost,totalScrap, onScrap, maxFood, maxWood, boxNow, woodChange, scrapChange, foodChange, totalCitizens, totalFood, onMills,smallShackNow, onAnts, foodDepreciation, smallShackInitial, antTrapProduction, woodMillProduction, woodMillNow, totalWood,antTrapInitial, antTrapAmount, antTrapNow, woodMillInitial, woodMillAmount,storageBoxInitial
 
     if ((totalWood >= 50) and antTrapInitial == False) or antTrapNow == True:
-        antTrap.place(x=0,y=160)
+        antTrap.place(x=10,y=160)
         antTrapInitial = True
         antTrapNow = False
     if ((antTrapAmount >= 7) and woodMillInitial == False) or woodMillNow == True:
@@ -1108,38 +1108,38 @@ def battleForestHill() -> None:
 #RESOURCES
 
 woodLabel = Label(mainScreen,text=f'Total Wood: {totalWood}',bg='maroon',fg='white')
-woodLabel.place(x=0,y=0)
+woodLabel.place(x=10,y=6)
 
 foodLabel = Label(mainScreen,text=f'Total Food: {totalFood}',bg='blue',fg='white')
-foodLabel.place(x=0,y=30)
+foodLabel.place(x=10,y=30)
 
 scrapLabel = Label(mainScreen,text=f'Total Scrap: {totalScrap}',bg='gray',fg='white')
-scrapLabel.place(x=0,y=550)
+scrapLabel.place(x=10,y=550)
 
 manPowerLabel = Label(mainScreen,text=f'Total Manpower: {manPower}',bg='green',fg='white')
-manPowerLabel.place(x=0,y=580)
+manPowerLabel.place(x=10,y=576)
 
 
 
 citizensLabel = Label(mainScreen,text=f'Total Citizens: {totalCitizens + totalCitizensBonus}',bg='honeydew',fg='black')
-citizensLabel.place(x=0,y=60)
+citizensLabel.place(x=10,y=60)
 
 collectTwigsButton = Button(mainScreen,text=f'Collect Twigs', command=collectWood)
-collectTwigsButton.place(x=260,y=0)
+collectTwigsButton.place(x=260,y=6)
 
 collectBerriesButton = Button(mainScreen,text=f'Collect Berries', command=collectBerries)
-collectBerriesButton.place(x=260,y=30)
+collectBerriesButton.place(x=260,y=35)
 
 blockLabel = Label(mainScreen,text="-------------------------------------------")
-blockLabel.place(x=0,y=85)
+blockLabel.place(x=10,y=85)
 
 #BUILDINGS
 
 buildingsLabel = Button(mainScreen,text="Buildings:",command=showBuildings)
-buildingsLabel.place(x=0,y=110)
+buildingsLabel.place(x=10,y=110)
 
 citizensLabel2 = Button(mainScreen,text="Citizens:",command=showCitizens)
-citizensLabel2.place(x=90,y=110)
+citizensLabel2.place(x=100,y=110)
 
 
 
@@ -1227,10 +1227,10 @@ antTrap.forget()
 antTrapTip = Hovertip(antTrap,f"Guess you have to start somewhere \nCosts: {antTrapPrice:.2f} wood \nProvides: {antTrapProduction*5} Food Per second")
 
 saveButton = Button(mainScreen, text=f'SAVE', command=finished)
-saveButton.place(x=0,y=500)
+saveButton.place(x=10,y=500)
 
 deleteSaveButton = Button(mainScreen, text=f'Delete Save', command=deleteSave)
-deleteSaveButton.place(x=50,y=500)
+deleteSaveButton.place(x=60,y=500)
 
 #TACTICS
 
