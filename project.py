@@ -23,24 +23,42 @@ stickCost = 65
 frameOneContent = 0
 
 names1 = ['Large','Thick','Unholy','Bending','Big','Titanic','Swollen','Pulsing','Long','Thin']
-names2 = ['Sword','Knife','Potion','Scythe','Meat','Bag','Car']
-names3 = ['London','Trolling','Gooning','Manhandling','Corbin','Princes']
+names2 = ['Sword','Knife','Potion','Scythe','Bag','Car']
+names3 = ['Night','Day','Time']
 
 troopRolls = {"Stick":4,"Rock":5}
 troopRollsEnemy = {"Stick":4,"Rock":5}
 
 mainScreen = Tk()
-mainScreen.geometry("1000x1000")
+mainScreen.geometry("600x600")
 mainScreen.resizable(False,False)
 
 class Items():
+    
+    '''
+    
+    This function creates an item instance that the player owns. These are saved in the save file and carry over.
+    
+    '''
+    
     itemFrame = Frame(mainScreen,background='skyblue')
     itemFrame.forget()
    
     canEquipLabel = Label(itemFrame,text="CAN EQUIP ONLY 3!",bg='red',fg='white')
     canEquipLabel.pack()
    
-    def __init__(self,itemName, itemEffect, itemMultiplier):
+    def __init__(self,itemName, itemEffect, itemMultiplier) -> None:
+        
+        '''
+        
+        This creates the item in question. itemName is the name of the item as shown in the program. itemEffect is the effect of the item (basewood basescrap or baseFood)
+        
+        itemMultiplier is the amount of the itemEffect that is provided.
+        
+        itemButton is also created such that items can be equipped
+        
+        '''
+        
         self.__equipped = False
         self.__itemName = itemName
         self.__itemEffect = itemEffect
@@ -49,7 +67,17 @@ class Items():
         self.__itemButton.pack()
         self.__itemTip = Hovertip(self.__itemButton,text=f'PROVIDES: {self.__itemEffect} of {self.__itemMultiplier}')
        
-    def buttonClicked(self):
+    def buttonClicked(self) -> None:
+        
+        '''
+        
+        When clicked, it will check if the item in question is equipped. If it isn't and equipped items is less than 3, the item is equipped
+        
+        If the item is equipped, then the item will be unequipped and the equipped items number is decremented by 1
+
+        
+        '''
+        
         global baseFood,baseWood,baseScrap
         if self.__equipped == False:
             if len(itemsEquipped) < 3:
@@ -73,12 +101,21 @@ class Items():
             self.__itemButton.configure(bg='gray')
             itemsEquipped.remove(self.__itemName)
             self.__equipped = False
-    def __str__(self):
+    def __str__(self) -> str:
         global this2
         this2 = f'{str(self.__itemName.replace(" ","."))}+|{self.__itemEffect.replace(" ",".")}-|{self.__itemMultiplier}'
         return f'{str(self.__itemName)} {self.__itemEffect} {self.__itemMultiplier}'
 
 if os.path.isfile("saveFile.txt"):
+    
+    '''
+
+    This portion of the program is ran at the beginning, and it retrieves the data from the save file. If a save file does not exist, then
+    
+    Default values are set such that the game is beginning
+
+
+    '''
     with open("saveFile.txt",'r') as f:
         dataList = f.read().split()
        
@@ -208,7 +245,7 @@ else:
     manPower = 0
     itemList = []
     stickWielders = 0
-goon = False
+boon = False
 onMills = 0
 onAnts = 0
 onScrap = 0
@@ -237,11 +274,34 @@ this2 = ""
        
 
 class Upgrades():
+    
+    '''
+
+    This class creates an upgrade instance such that upgrades can be added easily and in one line
+
+
+    '''
+    
     upgradeFrame = Frame(mainScreen,background='skyblue')
     upgradeFrame.forget()
     upgradeFrame2 = Frame(mainScreen,background='skyblue')
     upgradeFrame2.forget()
-    def __init__(self, upgradeName,upgradeCost,upgradeCostType,upgradeBenefit,toolTip,upgradeId,benefitType,upgradeModifier,finished,condition,amount,upgradeCost2=None,upgradeCostType2=None):
+    def __init__(self, upgradeName,upgradeCost,upgradeCostType,upgradeBenefit,toolTip,upgradeId,benefitType,upgradeModifier,finished,condition,amount,upgradeCost2=None,upgradeCostType2=None) -> None:
+        
+        '''
+
+        This method is run when a new upgrade is created. upgradeName is the name of the upgrade, upgradeCost is the cost, upgradeCostType is the type of resources required
+        
+        upgradeBenefit is the type of reward the upgrade grants, tooltip is the tooltip created when the upgrade is hovered over, upgradeId is the id of the upgrade for saving purposes
+        
+        upgradeModifier is the amount of benefit the upgrade grants. Finished checks if the upgrade has been bought. Condition checks if the condition for the upgrade to appear has been met
+        
+        upgradeCost2 and upgradeCostType2 are optional and if present introduce another upgrade cost and type to the upgrade.
+ 
+
+
+        '''
+        
         global idBlockList, frameOneContent
         self.__condition = condition
         self.__amount = amount
@@ -278,7 +338,15 @@ class Upgrades():
    
    
    
-    def buttonClicked(self):
+    def buttonClicked(self) -> None:
+        
+        '''
+
+        When the upgrade is clicked, this method will check if the upgradeCost of the upgradeCostType is met, and if it is the benefit will be granted
+
+
+        '''
+        
         global totalWood,totalFood,totalScrap, manPower, stickWielders
         print(totalWood)
         if (self.__upgradeCostType == "Wood") and (totalWood>=self.__upgradeCost):
@@ -331,8 +399,18 @@ class Upgrades():
             self.receiveBenefit()
             self.__upgradeButton.pack_forget()
            
-    def receiveBenefit(self):
-        global goon, stickCost, woodMillProduction, frameOneContent, stickWielderTip, troopRolls, manPowerMultiplier, totalCitizensBonus, totalCitizens, antTrapProduction, scrapMultiplier,unusedCitizens,maxFood,maxWood,boxAmount,boxBenefit,idBlockList,antTendingBoost, millTendingBoost
+    def receiveBenefit(self) -> None:
+        
+        '''
+
+        This method is run when the upgrade button is clicked and the upgradeCost is met. This provides the user with the benefit the upgrade Provides
+        
+        Also removes the resources which are required for the upgrade in question.
+
+
+        '''
+        
+        global boon, stickCost, woodMillProduction, frameOneContent, stickWielderTip, troopRolls, manPowerMultiplier, totalCitizensBonus, totalCitizens, antTrapProduction, scrapMultiplier,unusedCitizens,maxFood,maxWood,boxAmount,boxBenefit,idBlockList,antTendingBoost, millTendingBoost
         if self.__benefitType == "More Citizens":
             totalCitizens += self.__upgradeModifier
             unusedCitizens += self.__upgradeModifier
@@ -363,7 +441,7 @@ class Upgrades():
             woodMillProduction *= self.__upgradeModifier
        
         elif self.__benefitType == "Bonus Citizens":
-            goon = True
+            boon = True
             b = totalCitizens // 5 * self.__upgradeModifier
             totalCitizensBonus = b
            
@@ -384,7 +462,17 @@ class Upgrades():
         if self.__frame == "one":
             frameOneContent -= 1
    
-    def checkCondition(self):
+    def checkCondition(self) -> None:
+        
+        '''
+
+        This is run when the upgrades tab is open, and checks if an upgrade has a condition. If it does and the condition is met, the upgrade appears.
+        
+        If not, then it stays hidden.
+        
+
+        '''
+        
         global upgradeList, totalScrap
        
         print(self.__condition)
@@ -434,20 +522,39 @@ class Upgrades():
            
    
    
-    def __str__(self):
+    def __str__(self) -> str:
+        
+        '''
+
+        This is used to save the upgrades which are bought and is called when the save button is pressed
+
+        '''
+        
         global this
         this = f'{str(self.__finished)} {self.__upgradeId}'
         return f'{str(self.__finished)} {self.__upgradeId}'
        
 
-def hideBuildings():
+def hideBuildings() -> None:
+    
+    '''
+    Simply hides all the building labels/buttons in the buildings tab
+
+    '''
+    
     global antTrap,woodMill
     antTrap.place(x=10000)
     woodMill.place(y=10000)
     smallShack.place(x=10000)
     storageBox.place(x=10000)
 
-def showBuildings():
+def showBuildings() -> None:
+    
+    '''
+    Simply shows all the building labels/buttons in the buildings tab
+
+    '''
+    
     global antTrap,woodMill,smallShack,storageBox
    
     hideCitizens()
@@ -464,10 +571,14 @@ def showBuildings():
     if storageBoxInitial == True:  
         storageBox.place(x=360,y=160)
    
-def showCitizens():
-    global goon, unusedCitizens, onMills, onAnts, onScrap, totalCitizensBonus, onMilitary
+def showCitizens() -> None:
+    '''
+    Simply shows all the citizen labels/buttons in the citizens tab
+
+    '''
+    global boon, unusedCitizens, onMills, onAnts, onScrap, totalCitizensBonus, onMilitary
    
-    if goon == True:
+    if boon == True:
         b = totalCitizens // 5 * 2
         totalCitizensBonus = b
        
@@ -503,7 +614,11 @@ def showCitizens():
    
 
 
-def hideCitizens():
+def hideCitizens() -> None:
+    '''
+    Simply hides all the citizen labels/buttons in the citizens tab
+
+    '''
     unusedLabel.place(x=10000)
     plusOne.place(x=15000)
     minusOne.place(x=15000)
@@ -521,7 +636,11 @@ def hideCitizens():
     assignTen.place(x=15000)
     assignHundred.place(x=15000)
 
-def showUpgrades():
+def showUpgrades() -> None:
+    '''
+    Simply shows all the upgrade labels/buttons in the upgrades tab
+
+    '''
     hideBuildings()
     hideCitizens()
     hideItems()
@@ -535,7 +654,11 @@ def showUpgrades():
     Upgrades.upgradeFrame.place(x=0,y=155)
     Upgrades.upgradeFrame2.place(x=225,y=155)
 
-def showTactics():
+def showTactics() -> None:
+    '''
+    Simply shows all the tactic labels/buttons in the tactics tab
+
+    '''
     hideBuildings()
     hideUpgrades()
     hideCitizens()
@@ -546,28 +669,47 @@ def showTactics():
     forestHill.place(x=0,y=240)
     battleResults.place(x=0,y=280)
    
-def hideTactics():
+def hideTactics() -> None:
+    '''
+    Simply hides all the tactic labels/buttons in the tactics tab
+
+    '''
     troopsLabel.place(x=15000)
     stickWielder.place(x=15000)
     battlesLabel.place(x=15000)
     forestHill.place(x=15000)
     battleResults.place(x=15000)
 
-def showItems():
+def showItems() -> None:
+    '''
+    Simply shows all the item labels/buttons in the items tab
+
+    '''
     hideBuildings()
     hideCitizens()
     hideUpgrades()
     hideTactics()
     Items.itemFrame.place(x=0,y=155)
    
-def hideItems():
+def hideItems() -> None:
+    '''
+    Simply hides all the item labels/buttons in the items tab
+
+    '''
     Items.itemFrame.place(x=15000)
 
-def hideUpgrades():
+def hideUpgrades() -> None:
+    '''
+    Simply hides all the upgrade labels/buttons in the upgrades tab
+
+    '''
     Upgrades.upgradeFrame.place(x=15000)
     Upgrades.upgradeFrame2.place(x=15000)
 
-def updateLabels():
+def updateLabels() -> None:
+    '''
+    This is run every second, and updates all the labels such that the user can see accurate change in data
+    '''
     global woodChange,foodChange,maxWood,maxFood,scrapChange, unusedCitizens
     woodLabel.configure(text=f'Total Wood: {totalWood:.2f}/{maxWood:.0f} ({woodChange}/s)')
     foodLabel.configure(text=f'Total Food: {totalFood:.2f}/{maxFood:.0f} ({foodChange}/s)')
@@ -585,22 +727,34 @@ def updateLabels():
     manPowerLabel.configure(text=f'Total Manpower: {manPower:.2f}')
    
 
-def collectWood():
+def collectWood() -> None:
+    '''
+    This is run when the collect twigs button is pressed, and increments wood by 1
+
+    '''
     global totalWood
    
     totalWood += 1
    
     updateLabels()
    
-def collectBerries():
+def collectBerries() -> None:
+    '''
+    This is run when the collect berries button is pressed, and increments food by 1
+
+    '''
     global totalFood
    
     totalFood += 1
    
     updateLabels()
 
-def checking():
-    global goon, unusedCitizens, onMilitary, totalCitizensBonus, scrapMultiplier, millTendingBoost, antTendingBoost,totalScrap, onScrap, maxFood, maxWood, boxNow, woodChange, scrapChange, foodChange, totalCitizens, totalFood, onMills,smallShackNow, onAnts, foodDepreciation, smallShackInitial, antTrapProduction, woodMillProduction, woodMillNow, totalWood,antTrapInitial, antTrapAmount, antTrapNow, woodMillInitial, woodMillAmount,storageBoxInitial
+def checking() -> None:
+    '''
+    This checks if a building is unlocked, and if it is the button for said building appears
+
+    '''
+    global boon, unusedCitizens, onMilitary, totalCitizensBonus, scrapMultiplier, millTendingBoost, antTendingBoost,totalScrap, onScrap, maxFood, maxWood, boxNow, woodChange, scrapChange, foodChange, totalCitizens, totalFood, onMills,smallShackNow, onAnts, foodDepreciation, smallShackInitial, antTrapProduction, woodMillProduction, woodMillNow, totalWood,antTrapInitial, antTrapAmount, antTrapNow, woodMillInitial, woodMillAmount,storageBoxInitial
 
     if ((totalWood >= 50) and antTrapInitial == False) or antTrapNow == True:
         antTrap.place(x=0,y=160)
@@ -618,7 +772,7 @@ def checking():
         storageBox.place(x=360,y=160)
         storageBoxInitial = True
         boxNow = False
-    if goon == True:
+    if boon == True:
         b = totalCitizens // 5 * 2
         totalCitizensBonus = b
        
@@ -628,7 +782,11 @@ def checking():
     t4 = Timer(0.1,checking)
     t4.start()
 
-def feedThePeople():
+def feedThePeople() -> None:
+    '''
+    This is run once every 0.2 seconds, and changes all variables based on the per second basis of every resource
+
+    '''
     global scrapMultiplier, manPowerMultiplier, baseFood, baseWood, baseScrap, onMilitary, manPower, millTendingBoost, totalCitizensBonus, antTendingBoost,totalScrap, onScrap, maxFood, maxWood, boxNow, woodChange, scrapChange, foodChange, zens, totalFood, onMills,smallShackNow, onAnts, foodDepreciation, smallShackInitial, antTrapProduction, woodMillProduction, woodMillNow, totalWood,antTrapInitial, antTrapAmount, antTrapNow, woodMillInitial, woodMillAmount,storageBoxInitial
    
     foodDepreciation = baseFood/5 + (antTrapAmount * antTrapProduction) - 0.1 - ((totalCitizens + totalCitizensBonus) * 0.1) + (onAnts * 0.15) * antTendingBoost
@@ -675,7 +833,11 @@ def feedThePeople():
     t2 = Timer(0.2,feedThePeople)
     t2.start()
 
-def buyAntTrap():
+def buyAntTrap() -> None:
+    '''
+    This checks if the price for ant traps is met. If it is, totalWood is decresaed by the price, and an ant trap is added, as well as its benefits
+
+    '''
     global ownedAntTraps, totalWood, antTrapPrice, passiveFoodProduction,antTrapAmount
    
     if totalWood >= antTrapPrice:
@@ -686,7 +848,11 @@ def buyAntTrap():
        
         updateLabels()
         antTrapTip = Hovertip(antTrap,f"Guess you have to start somewhere \nCosts: {antTrapPrice:.2f} wood \nProvides: {antTrapProduction*5} Food Per second")
-def buyWoodMill():
+def buyWoodMill() -> None:
+    '''
+    Checks if the price for wood mills is met. If it is, totalWood is decreased by the price, and a wood mill is added, as well as its benefits
+
+    '''
     global woodMillAmount, totalWood, woodMillPrice
    
     if totalWood >= woodMillPrice:
@@ -696,7 +862,11 @@ def buyWoodMill():
    
     updateLabels()
     woodMillTip = Hovertip(woodMill,f'Automatically Harvests Wood\nCosts: {woodMillPrice:.2f} wood \nProvides: 0.25 Wood Per Second')
-def buySmallShack():
+def buySmallShack() -> None:
+    '''
+    Checks if the price for small shacks is met. If it is, totalWood and totalFood is decreased by the prices, and a small shack is added, as well as a citizen
+
+    '''
     global smallShackAmount, totalWood, totalCitizens, smallShackPrice1, smallShackPrice2, totalFood, unusedCitizens
    
     if (totalWood >= smallShackPrice1) and (totalFood >= smallShackPrice2):
@@ -711,7 +881,11 @@ def buySmallShack():
         smallShackAmount += 1
     smallShackTip = Hovertip(smallShack,f'A shitty house for your citizens\nCosts: {smallShackPrice1:.2f} wood and {smallShackPrice2:.2f} berries\nProvides: 1 citizen\n (NOTE: Citizens consume 0.5 food per second)')
 
-def buyStorageBox():
+def buyStorageBox() -> None:
+    '''
+    Checks if the price for a storage box is met. If it is, totalFood and totalScrap is decreased by the prices, and a storage box is added, and max resources increased
+
+    '''
     global totalFood,boxPrice1,boxPrice2,totalScrap,maxFood,maxWood,boxAmount,boxBenefit
    
     if (totalFood >= boxPrice1) and (totalScrap >= boxPrice2):
@@ -728,8 +902,12 @@ def buyStorageBox():
 
        
    
-       
-def finished():  
+    
+def finished() -> None:
+    '''
+    This is run when the save button is pressed, and data is appended to the file
+
+    '''
     global totalFood, manPower, itemList, totalWood, antTrapAmount, woodMillAmount,smallShackAmount,oneBought, upgradeList,this,boxAmount, this2
    
     with open('saveFile.txt','w') as f:
@@ -753,11 +931,21 @@ def finished():
             f.write(f' {this.split()[1]} {this.split()[0]}')
                
        
-def deleteSave():
+def deleteSave() -> None:
+    '''
+    This is run when the delete save button is pressed, and clears the save file such that a new game is started.
+
+    '''
     with open('saveFile.txt','w') as f:
         f.write(f'50 0 0 0 0 False 0 0 0 0 0 0 0 0 ITEMSTOP')
        
-def add(job):
+def add(job) -> None:
+    '''
+    This is run when one of the plus buttons is pressed, and adds the corresponding amount of citizens to the job
+    
+    Also checks if there are enough available citizens
+
+    '''
     global onMills,unusedCitizens,onAnts,onScrap,onMilitary
    
     print(assignNum.get())
@@ -775,7 +963,13 @@ def add(job):
         unusedCitizens -= assignNum.get()
    
 
-def minus(job):
+def minus(job) -> None:
+    '''
+    This is run when one of the minus buttons is pressed, and removes the corresponding amount of citizens to the job
+    
+    Also checks if there are enough people on the job to remove
+
+    '''
     global onMills,unusedCitizens, onAnts,onScrap, onMilitary,assignNum
    
    
@@ -792,7 +986,13 @@ def minus(job):
         onMilitary -= assignNum.get()
         unusedCitizens += assignNum.get()
 
-def buyStick():
+def buyStick() -> None:
+    '''
+    Run when the stickWielder button is pressed, and checks if manPower is greater than stickCost. If it is, remove manPower equal to the cost,
+    
+    and add a stickWielder
+
+    '''
     global manPower, stickWielders, stickCost
    
     if manPower >= stickCost:
@@ -800,7 +1000,11 @@ def buyStick():
         stickWielders += 1
         stickWielder.configure(text=f'Stick Wielder ({stickWielders})')
 
-def battle(troopList):
+def battle(troopList) -> bool:
+    '''
+    Conducts a battle based on the amount of troops you have and the enemy. If the battle succeeds, loot is provided.
+
+    '''
     global yourTroops,enemyTroops,troopRolls, stickWielders,stickWielder
    
     enemyTroops = []
@@ -857,7 +1061,13 @@ def battle(troopList):
        
        
 
-def battleForestHill():
+def battleForestHill() -> None:
+    '''
+    Run when the battle of forest hill button is pressed, and calculates the battle results using the battle method.
+    
+    If battle returns true, loot is provided, and if False no loot is provided.
+
+    '''
     global manPower, stickWielders,totalScrap,totalWood,totalFood
    
     if battle(["Rock","Rock","Rock","Rock","Rock","Stick"]) == True:
